@@ -3,21 +3,18 @@ pipeline {
   stages {
     stage('Build') {
       parallel {
-        stage('Build') {
+        stage('Build one') {
           steps {
             sh 'echo "Hello world"'
           }
         }
-
         stage('Second Build') {
           steps {
             echo 'Hello new'
           }
         }
-
       }
     }
-
     stage('Test') {
       steps {
         sleep 20
