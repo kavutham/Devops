@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deployed version ${params.versionid} Successfully'
+                bat "echo Deployed version ${params.versionid} Successfully"
             }
         }
     }
