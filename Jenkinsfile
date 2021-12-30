@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    parameters {
+    string(name: 'versionid', defaultValue: '1.0', description: 'Provide version ID')
+  }
     //tools { 
     //    maven 'Maven' 
     //    jdk 'JAVA_17' 
