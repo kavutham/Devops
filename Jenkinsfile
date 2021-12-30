@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bat 'mvn -B -DskipTests clean package -Dversion.number=${versionid}'
+                bat 'mvn -B -DskipTests clean package'
             }
         }
         stage('Test') {
@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deployed Successfully'
+                echo 'Deployed version ${versionid} Successfully'
             }
         }
     }
