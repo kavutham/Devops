@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deployed Successfully'
+                bat 'java -jar target/java -jar target/${NAME}-${VERSION}.jar'
             }
         }
     }
