@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                echo 'Deployed version ${versionid} Successfully'
+                echo 'Deployed version $versionid Successfully'
             }
         }
     }
