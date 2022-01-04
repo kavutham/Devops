@@ -1,12 +1,15 @@
 pipeline {
     agent any
+    //environment {
+    //  GIT_COMMIT_SHORT = sh(script: "printf \$(git rev-parse --short ${GIT_COMMIT})", returnStdout: true)
+    //}
     parameters {
     string(name: 'versionid', defaultValue: '1.0', description: 'Provide version ID')
-  }
-    //tools { 
-    //    maven 'Maven' 
-    //    jdk 'JAVA_17' 
-    //}
+    }
+    tools { 
+        maven 'Maven' 
+        jdk 'JAVA_17' 
+    }
     stages {
         stage('Build') {
             steps {
@@ -23,9 +26,33 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube analysis') {
+          environment {
+            SCANNER_HOME = tool 'Sonar-scanner'
+            }
+          steps {
+            withSonarQubeEnv(credentialsId: 'sonar-credentialsId', installationName: 'Sonar') {
+            bat '''$SCANNER_HOME/bin/sonar-scanner \
+            -Dsonar.projectKey=projectKey \
+            -Dsonar.projectName=projectName \
+            -Dsonar.sources=src/ \
+            -Dsonar.java.binaries=target/classes/ \
+            -Dsonar.exclusions=src/test/java/****/*.java \
+            -Dsonar.java.libraries=/var/lib/jenkins/.m2/**/*.jar
+            -Dsonar.projectVersion=${BUILD_NUMBER}-${params.versionid} '''
+            }
+            }
+        }
+        stage('Squality Gate') {
+          steps {
+            timeout(time: 1, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+            }
+        }
+        }
         stage('Deploy') {
-            steps {
-                bat "echo Deployed version ${params.versionid} Successfully"
+          steps {
+            bat "echo Deployed version ${params.versionid} Successfully"
             }
         }
     }
