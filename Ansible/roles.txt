@@ -1,0 +1,106 @@
+$ cd /etc/ansible/roles
+$ sudo ansible-galaxy init prerequisites
+$ sudo ansible-galaxy init mongodb
+$ sudo ansible-galaxy init nodejs
+
+
+
+
+$ cd prerequisites/tasks/main.yml
+ 
+---
+- name: Install git
+  apt:
+     name: git
+     state: present
+     update_cache: yes
+	 
+
+
+
+
+
+
+
+$ cd /mongodb/tasks/main.yml
+ 
+---
+- name: MongoDB - Import public key
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: EA312927
+ 
+- name: MongoDB - Add repository
+  apt_repository:
+    filename: '/etc/apt/sources.list.d/mongodb-org-3.2.list'
+    repo: 'deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse'
+    state: present
+    update_cache: yes
+ 
+- name: MongoDB - Install MongoDB
+  apt:
+    name: mongodb-org
+    state: present
+    update_cache: yes
+ 
+- name: MongoDB - Running state
+  service:
+    name: mongod
+    state: started
+	
+
+
+
+
+
+$ cd nodejs/tasks/main.yml
+ 
+---
+- name: Node.js - Get script
+  get_url:
+    url: "http://deb.nodesource.com/setup_6.x"
+    dest: "{{ var_node }}/nodejs.sh"
+ 
+- name: Node.js - Set execution permission to script
+  file:
+    path: "{{ var_node }}/nodejs.sh"
+    mode: "u+x"
+ 
+- name: Node.js - Execute installation script
+  shell: "{{ var_node }}/nodejs.sh"
+ 
+- name: Node.js - Remove installation script
+  file:
+    path: "{{ var_node}}/nodejs.sh"
+    state: absent
+ 
+- name: Node.js - Install Node.js
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - build-essential
+    - nodejs
+ 
+- name: Node.js - Install bower and gulp globally
+  npm: name={{ item }} state=present global=yes
+  with_items:
+    - bower
+    - gulp
+	
+
+
+
+$ cd /etc/ansible/mean.yml
+ 
+---
+ 
+- hosts: nodes
+  remote_user: ansible
+  become: yes
+  become_method: sudo
+  vars:
+    #variable needed during node installation
+    var_node: /tmp
+  roles:
+      - prerequisites
+      - mongodb
+      - nodejs

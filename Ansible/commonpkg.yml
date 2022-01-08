@@ -1,0 +1,12 @@
+---
+  - name: install basic packages 
+    hosts: webservers
+    tasks:
+      - name: "Installing Vim"
+        apt: pkg=vim
+        
+      - name: "Installing DNS Utils"
+        apt: pkg=dnsutils
+        
+      - name: "Installing Git"
+        apt: pkg=git

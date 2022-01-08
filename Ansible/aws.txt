@@ -1,0 +1,45 @@
+prerequiste
+
+$ sudo apt install python
+$ sudo apt install python-pip
+$ pip install boto
+
+#Boto is a python interface for using Amazon Web services. You’ll have to import it using the following command
+
+$ python
+$ import boto
+$ exit()
+
+#You have to configure your AWS. Use the following command for the same
+$ aws configure
+ 
+#And add your AWS access key id, secret key and default region(which is optional
+
+
+---
+ 
+- name: Create an ec2 instance
+  hosts: web
+  gather_facts: false
+ 
+  vars:
+      region: us-east-1
+      instance_type: t2.micro
+      ami: ami-05ea7729e394412c8
+      keypair: priyajdm
+ 
+  tasks:
+    - name: Create an ec2 instance
+      ec2:
+         aws_access_key: '********************'
+         aws_secret_key: '****************************************'
+         key_name: "{{ keypair }}"
+         group: launch-wizard-26
+         instance_type: "{{ instance_type }}"
+         image: "{{ ami }}"
+         wait: true
+         region: "{{ region }}"
+         count: 1
+         vpc_subnet_id: subnet-02f498e16fd56c277
+         assign_public_ip: yes
+    register: ec2

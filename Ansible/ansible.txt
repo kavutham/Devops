@@ -1,0 +1,303 @@
+Have you ever thought about business which comes with mentoring platform?
+
+Ansible Installation on Linux 7.2
+
+I. 	SSH Preparation
+II.	SSH Execution
+III.	Ansible Installation
+IV.	Ansible Configuration
+
+I. SSH Preparation for Master and Webgroup (All Nodes)
+
+1) Create couple of instances at AWS and Select Red Hot Linux images 7.2 Version
+	Namely as Master and Webgroup
+
+2)	Change ec2-user to root user by applying
+	sudo -i
+
+3)	Go to root user and obtain root user password
+	passwd root
+	
+4)	Go to cd /etc/ssh and edit at sshd_config file as per below
+
+	Uncommnad the # key of PermitRootLogin yes
+        (Delete # key)
+	Uncommand the # key on PasswordAuthentication yes
+	
+
+5)	Restart the sshd service by applying below
+	systemctl restart sshd (for all instances such as Master and Webgroup)
+
+6)	Apply visudo commands for all machine
+	Add below one at last line
+
+	root	ALL=(ALL)	NOPASSWD: ALL 
+	__________________________________________________________________________________________
+
+II.	SSH Execution (Master Only)
+
+1) ssh-keygen 
+Now key has generated which need to be shared across all machine for connection without password
+
+2) ssh-copy-id username@workernode Private Ip Address
+
+Apply ssh-copy-id of all as per combination (ssh-copy-id username@172.31.18.172) : Private Ip Address
+
+Example: if you are in master, ssh-copy-id root@172.31.18.172
+
+Check whether ssh key is working or not (First time ask for passwor and no prompt for asking password 2nd time onwards)
+
+3) ssh root@ip address (root is a user name and each machine communicate each other w/o asking password)
+
+root is a user name, you need to apply as per your user
+
+You can refer ip address where you can make the differnces.
+
+By applying exit command, switch from Webgroup to Master 
+___________________________________________________________________________________________________________
+III.	Ansible Installation
+
+At Control Server only (Master)
+
+yum update -y
+yum repolist
+yum install wget -y
+wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm -ivh epel-release-latest-7.noarch.rpm
+yum install ansible -y
+
+Ensure that ansible has installed or not, by applying the following
+
+ansible --version
+_________________________________________________________________________________________________________________
+
+IV.	Ansible Configuration (Master)
+
+Go to /etc/ansible folder
+You get the hosts file
+Open with vi hosts
+Go to last line, create a group as per below
+[webgroup]
+below add private ip of webgroup (Pvt id of worker node)
+
+List out all hosts details
+
+ansible all --list-hosts
+
+apply below
+
+ansible all -m ping
+_______________________________________________________________________________________________
+
+Pratice
+Go to "/etc/ansible" folder and open hosts file with "vi hosts" and add few hosts groups and name of the hosts
+
+ansible --list-hosts all	
+ansible --list-hosts "*"
+ansible --list-hosts loadbalancer
+ansible --list-hosts webserver
+ansible --list-hosts webserver:loadbalancer
+ansible --list-hosts webserver[0]
+ansible --list-hosts webserver[1]
+ansible --list-hosts \!loadbalancer
+(Display all groups other than Load Balancer group)
+
+_______________________________________________________________________________________________
+
+
+Write a playbook inside the ansible folder
+
+	1)	Filename with extension of yaml
+	2)	Yml progrm as follows
+	3)	
+		  - hosts: all
+		    tasks: 
+		    - command: hostname
+
+Run Playbook apply below commands
+ansible-playbook <Playbook name>
+
+_________________________________________________________________________________________________________________
+
+Install tree
+
+
+- hosts: all
+  become: true
+  tasks:
+    - name: I am going to install tree
+      yum: name=tree state=present
+
+Run Playbook apply below commands
+ansible-playbook <Playbook name>
+
+> ansible-playbook <Playbook Name with extension> (yaml or yml)
+
+_________________________________________
+
+Install Tomcat
+
+
+- hosts: all
+  become: true
+  tasks:
+  - name: I am going to install tomcat
+    yum: name=tomcat state=present
+
+________________________________________________________________________________
+
+Install Nginx by local file
+
+---
+ - hosts: all
+   become: true
+   become_user: root
+   become_method: sudo
+   tasks:
+   - name: Download Nginx Release
+     get_url: url=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm dest=/opt/epel-release-latest-7.noarch.rpm
+   - name: install nginx rpm from a local file
+     yum:
+      name: /opt/epel-release-latest-7.noarch.rpm
+      state: present
+   - name: Install Nginx
+     yum: name=nginx state=present update_cache=yes
+_____________________________________________________________________________________
+Install the nginx rpm from a remote repo 
+
+---
+ - hosts: all
+   become: true
+   become_user: root
+   become_method: sudo
+   tasks:
+   - name: install the nginx rpm from a remote repo
+     yum:
+      name: http://nginx.org/packages/centos/6/noarch/RPMS/nginx-release-centos-6-0.el6.ngx.noarch.rpm
+      state: present
+   - name: Install Nginx
+     yum: name=nginx state=present update_cache=yes
+____________________________________________________________________________________
+
+New Command With Items
+
+- hosts: all
+  become: true
+  tasks:
+  - name: I am going to install lot of packages
+    yum: name={{item}} state=present
+    with_items:
+     - vim
+     - gedit
+     - nano
+     - wget
+     - unzip
+
+For Chef, package ['git', 'tomcat', 'vim']
+_____________________________________________________________________________________
+
+Schedule a Playbook Using Cron
+
+As an additional option, you can schedule a playbook to run at a specific time using your servers cron command! To accomplish this, log in to your server as root and run the following command:
+
+At Master Node 
+
+crontab -e
+
+This command opens a temporary cron file in your system’s default text editor and then simply add a line like so:
+
+* * * * * /usr/bin/ansible-playbook /etc/ansible/multiplepck.yaml
+
+this will run the/etc/ansible/playbooks/multiplepck.yaml file at every one minutes. using the ansible-playbook command.
+
+____________________________________________________________________________________________________________________
+Create 3 instances
+One Master RHEL
+One Worker Node with RHEL
+One Worker Node with Ubuntu 18.04
+
+- name: Multiple OS Install
+  hosts: all
+  
+  tasks:
+  - name: Installing Tree Package on Multiple Platform
+    package:
+      name: tree
+      state: present
+      update_cache: true
+    become: true
+________________________________________________________________________________________________
+
+We would like to install Php7.2 only on Ubuntu and not on Rhel 
+
+- name: Run tasks on all hosts
+  hosts: all
+  
+  tasks:
+  - name: Installing Php7.2
+    apt:
+      name: php7.2
+      state: present
+      update_cache: true
+    become: true
+    when: ansible_distribution == 'Ubuntu'
+
+Run the playbooking by using
+ansible-playbook <filename.yaml or yml>
+
+______________________________________________________________________________________________________________________
+We would like to install Php7.2 only on Ubuntu and MySql on Rhel 
+
+- name: Run tasks on all hosts
+  hosts: all
+  
+  tasks:
+  - name: Installing Php7.2
+    apt:
+      name: php7.2
+      state: present
+      update_cache: true
+    become: true
+    when: ansible_distribution == 'Ubuntu'
+- name: Installing MySql
+    yum:
+      name: mysql
+      state: present
+      update_cache: true
+    become: true
+    when: ansible_distribution == 'RedHat'
+
+________________________________________________________________________________________________________
+
+
+- name: Install Mulitple Package
+  hosts: all
+  
+  tasks:
+  - name: Installing Php7.2 and mysql
+    apt:
+      name: 
+        - php7.2
+        - php7.2-mysql
+      state: present
+      update_cache: true
+    become: true
+    when: ansible_distribution == 'Ubuntu'
+_________________________________________________________
+
+Below commands indicates whether sql has installed or not
+dpkg -l | grep '\(php\|mysql\)'
+
+apt-list, command for displaying list applcation which installed
+
+____________________________________________
+
+
+
+
+
+
+
+
+
+

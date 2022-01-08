@@ -1,0 +1,10 @@
+to do dry run have to add -C to your ansible-playbook startup command
+$ ansible-playbook -C sampleplaybook.yml -i ansible_hosts
+
+ansible-lint
+
+ansible-vault 
+
+ansible-playbook
+
+ansible-galaxy
