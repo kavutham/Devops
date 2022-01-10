@@ -3,9 +3,14 @@ pipeline {
         docker { image 'gradle:6.7-jdk11' }
     }
     stages {
-        stage('Test') {
+        stage('Build Docker') {
             steps {
-                bat 'gradle --version'
+                image= docker.build("test-image", "./dockerfiles/test")
+            }
+        }
+        stage('Run Dockerimage'){
+            steps{
+                image.run(-p 9091:9091)
             }
         }
     }
