@@ -1,0 +1,18 @@
+version: '3'
+services:
+  user-api:
+    build:
+      context: ./user-api/
+    ports:
+      - "3080:3080"
+    container_name: user-api
+    volumes:
+       - ./user-api/src:/usr/src/app/src
+  login-api:
+    build:
+      context: ./login-api/
+    ports:
+      - "3090:3090"
+    container_name: login-api
+    volumes:
+       - ./login-api/src:/usr/src/app/src

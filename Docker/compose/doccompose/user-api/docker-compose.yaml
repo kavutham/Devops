@@ -1,0 +1,10 @@
+version: '3'
+services:
+  user-api:
+    build:
+      context: .
+    ports:
+      - "3090:3090"
+    container_name: user-api
+    volumes:
+       - ./src:/usr/src/app/src

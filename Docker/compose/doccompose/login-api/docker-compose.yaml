@@ -1,0 +1,10 @@
+version: '3'
+services:
+  login-api:
+    build:
+      context: .
+    ports:
+      - "3080:3080"
+    container_name: login-api
+    volumes:
+       - ./src:/usr/src/app/src
