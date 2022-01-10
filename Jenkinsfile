@@ -1,11 +1,11 @@
 pipeline {
     agent {
-        docker { image 'node:16.13.1-alpine' }
+        docker { image 'gradle:6.7-jdk11' }
     }
     stages {
         stage('Test') {
             steps {
-                bat 'node --version'
+                bat 'gradle --version'
             }
         }
     }
