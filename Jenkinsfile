@@ -17,6 +17,11 @@ pipeline {
                 }
             }
         }
+        stage ('Invoke_otherpipeline') {
+            steps {
+                build job: 'demopipeline'//, parameters: [string(name: 'param1', value: "value1")]
+            }
+        }
         stage('Deploy') {
             steps {
                 echo 'Deployed Successfully'
