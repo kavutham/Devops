@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Run Dockerimage'){
             steps{
-                image.run([-p 9091:9091])
+                image.run(["-p 9091:9091"])
             }
         }
     }
