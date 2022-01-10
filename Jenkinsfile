@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Build Docker') {
             steps {
-                image= docker.build("test-image", "./dockerfiles/test")
+                image= docker.build("test-image", "./Demo/example")
             }
         }
         stage('Run Dockerimage'){
