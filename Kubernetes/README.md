@@ -1,24 +1,4 @@
 ## Basic Commands and Explanation
-
-**Kind:** A deployment.
-
-**Selector:** Pods matching the selector will be taken under the management of this deployment.
-
-**Replicas:** is a property of the deployments Spec object that defines how many pods we want to run. So only 2.
-
-**Type:** specifies the strategy used in this deployment when moving from the current version to the next. The strategy RollingUpdate ensures Zero Downtime deployments.
-
-**MaxUnavailable:** is a property of the RollingUpdate object that specifies the maximum unavailable pods allowed (compared to the desired state) when doing a rolling update. 
-For our deployment which has 2 replicas this means that after terminating one Pod, we would still have one pod running, this way keeping our application accessible.
-
-**MaxSurge:** is another property of the RollingUpdate object that defines the maximum amount of pods added to a deployment (compared to the desired state).
-For our deployment, this means that when moving to a new version we can add one pod, which adds up to 3 pods at the same time.
-
-**Template:** specifies the pod template that the Deployment will use to create new pods. Most likely the resemblance with Pods struck you immediately.
-
-**app:** sa-frontend the label to use for the pods created by this template.
-
-**ImagePullPolicy:** when set to Always, it will pull the container images on each redeployment.
  
 	**exec alllows any process within the container:** kubectl exec --stdin --tty mongo-75f59d57f4-5z52g -- /bin/bash
 	
@@ -31,9 +11,6 @@ For our deployment, this means that when moving to a new version we can add one 
 	**portforward:** kubectl port-forward svc/frontend 8080:80
 	
 	**HPA:** kubectl autoscale rs frontend --max=10 --min=3 --cpu-percent=50
-	
-	 **Expose"** kubectl expose deployment my-deployment-50001 --name my-lb-service --type LoadBalancer --port 60000 --target-port 50001
-
 
 ## Networking:
 **Conatiner in same pod:**
@@ -80,19 +57,24 @@ Default the pull policy of all containers in that pod will be set to IfNotPresen
     These Pods have a lifetime that is tied to a machine lifetime. They can not be autoscaled
 
 ## Service:    
-** ClusterIP:** Exposes the Service internally to the cluster. This is the default setting for a Service. However a Kubernetes user you can use kubectl port-forward to access the service even though it uses a ClusterIP.
-**NodePort:** Exposes the Service to the internet from the IP address of the Node at the specified port number. You can only use ports in the 30000-32767 range.
+**ClusterIP:** 
+Exposes the Service internally to the cluster. This is the default setting for a Service. However a Kubernetes user you can use kubectl port-forward to access the service even though it uses a ClusterIP.
+**NodePort:** 
+Exposes the Service to the internet from the IP address of the Node at the specified port number. You can only use ports in the 30000-32767 range.
 
     kubectl expose deployment my-deployment-50000 --name my-np-service --type NodePort --protocol TCP --port 80 --target-port 50000
 
-**LoadBalancer:** This will create a load balancer assigned to a fixed IP address in the cloud, so long as the cloud provider supports it. In the case of Linode, this is the responsibility of the Linode Cloud Controller Manager, which will create a NodeBalancer for the cluster. This is the best way to expose your cluster to the internet.
+**LoadBalancer:** 
+This will create a load balancer assigned to a fixed IP address in the cloud, so long as the cloud provider supports it. In the case of Linode, this is the responsibility of the Linode Cloud Controller Manager, which will create a NodeBalancer for the cluster. This is the best way to expose your cluster to the internet.
     
     kubectl expose deployment my-deployment-50001 --name my-lb-service --type LoadBalancer --port 60000 --target-port 50001
     
 **Cloud provider LB Caveats:** Every Service that you deploy as LoadBalancer will get it’s own IP. difficulty of managing lots of different IPs. The LoadBalancer is usually billed based on the number of exposed services, which can be expensive.
-**ExternalName:** Maps the service to a DNS name by returning a CNAME record redirect. ExternalName is good for directing traffic to outside resources, 
-    such as a database that is hosted on another cloud.
+
+**ExternalName:** Maps the service to a DNS name by returning a CNAME record redirect. ExternalName is good for directing traffic to outside resources, such as a database that is hosted on another cloud.
+
 **Headless:** You can use a headless service in situations where you want a Pod grouping, but don't need a stable IP address.
+
 **Ingress:** Ingress isn’t a type of Service, but rather an object that acts as a reverse proxy and single entry-point to your cluster that routes the request to different services.The most basic Ingress is the NGINX Ingress Controller, where the NGINX takes on the role of reverse proxy, while also functioning as SSL
     
 **Several ways to route external traffic into your cluster:**
@@ -102,8 +84,8 @@ Default the pull policy of all containers in that pod will be set to IfNotPresen
     
 ## Volumes:
 
-A PersistentVolume (PV) is a piece of storage in the cluster that has been provisioned by server/storage/cluster administrator or dynamically provisioned Using Storage Classes. It is a resource in the cluster just like node.
+**A PersistentVolume (PV):** is a piece of storage in the cluster that has been provisioned by server/storage/cluster administrator or dynamically provisioned Using Storage Classes. It is a resource in the cluster just like node.
 
-A PersistentVolumeClaim (PVC) is a request for storage by a user which can be attained from PV. It is similar to a Pod. Pods consume node resources and PVCs consume PV resources. Pods can request specific levels of resources (CPU and Memory). 
+**A PersistentVolumeClaim (PVC):** is a request for storage by a user which can be attained from PV. It is similar to a Pod. Pods consume node resources and PVCs consume PV resources. Pods can request specific levels of resources (CPU and Memory). 
 
 Claims can request specific size and access modes (e.g., they can be mounted ReadWriteOnce, ReadOnlyMany or ReadWriteMany.
