@@ -1,0 +1,9 @@
+---
+
+- hosts: all
+  gather_facts: false
+  tasks:
+    - name: Ensure API key is present in config file
+      ansible.builtin.lineinfile:
+        path: /etc/app/configuration.ini
+        line: "API_KEY={{ api_key }}"
