@@ -22,3 +22,15 @@ Goals are --> Maven Plugin = group of goals. Goals comprises of Tasks (specific)
     install – Install the package into the local repository, for use as a dependency in other projects locally.
     
     deploy – Done in the build environment, copies the final package to the remote repository for sharing with other developers and projects.
+
+mvn dependency:tree
+
+--> This command generates the dependency tree of the maven project.
+
+mvn -DskipTests package
+
+--> The skipTests system property is used to skip the unit test cases from the build cycle. We can also use -Dmaven.test.skip=true to skip the test cases execution.
+
+mvn -q package  --> Quiet mode
+
+mvn -X package --> debug mode
