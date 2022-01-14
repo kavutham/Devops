@@ -32,8 +32,8 @@ docker-compose down
   
 In Bridge network all containers will be assigned with intenral IP address and they can communicate with each other. But they can’t communicate outside the bridge network.
 With -p flag however, we can map the docker port to the native port.
-  
-Default --> localhost IP --> docker hostt IP with port --> container port
+ 
+docker run -p 80:80 dockerimage
   
 **Host:**
   
