@@ -1,6 +1,6 @@
-##Networking:
+## Networking:
     Conatiner in same pod:
-
+  
     Network namespace a collection of network interfaces (connections between two pieces of equipment on a network) and routing tables (instructions for where to send network packets).
 
     Each pod on a node has its own network namespace. Each pod has its own IP address
@@ -20,14 +20,14 @@
     
     kube-proxy manages forwarding of traffic addressed to the virtual IP addresses (VIPs) of the cluster's Kubernetes Service objects to the appropriate backend pods
 
-##Pod:
+## Pod:
 
     When a Pod runs multiple containers, the containers are managed as a single entity and share the Pod's resources. All the containers in the pod share same network space (resource)
     
     Pods has it own ip address so when it dies, its ip is also lost. To make communication still, we need service tagged to pods using selector tag
     whcih will be running always even if the pod dies.
 
-##Images: 
+## Images: 
 
 	To use an image without uploading it, you can follow these steps: It is important that you be in same shell since you are setting environment variables!
 	1. Set the environment variables with eval $(minikube docker-env)
@@ -37,7 +37,7 @@
     
    Default the pull policy of all containers in that pod will be set to IfNotPresent if not specfied
 
-##Containers:
+## Containers:
 
     There are three ways that containers in the pod communicate with each other.
     1. Shared Network Namespace, 
@@ -45,11 +45,11 @@
     3. Shared Process Namespace.
  
 
-##Daemonset:
+## Daemonset:
     Use a DaemonSet instead of a ReplicaSet for Pods that provide a machine-level function, such as machine monitoring or machine logging. 
     These Pods have a lifetime that is tied to a machine lifetime. They can not be autoscaled
 
-##Service:
+## Service:
 
     ClusterIP: Exposes the Service internally to the cluster. This is the default setting for a Service. However a Kubernetes user you can use kubectl port-forward 
                to access the service even though it uses a ClusterIP.
@@ -78,7 +78,7 @@
     
     Ingress: Ingress isn’t a type of Service, but rather an object that acts as a reverse proxy and single entry-point to your cluster that routes the request to different services. 
              The most basic Ingress is the NGINX Ingress Controller, where the NGINX takes on the role of reverse proxy, while also functioning as SSL
-##Volumes:
+## Volumes:
 
 A PersistentVolume (PV) is a piece of storage in the cluster that has been provisioned by server/storage/cluster administrator or dynamically provisioned 
 
