@@ -1,0 +1,21 @@
+# app-ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: ingress-nginx
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+      - api-sand.fake.com
+  rules:
+  - host: api-sand.fake.com
+    http:
+      paths:
+      - backend:
+          serviceName: api-sand
+          servicePort: 80
+        path: /

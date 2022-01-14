@@ -1,0 +1,10 @@
+version: '3'
+services:
+  nodejs-server:
+    build:
+      context: .
+    ports:
+      - "3070:3070"
+    container_name: rest-api
+    volumes:
+       - ./src:/usr/src/app/src:ro

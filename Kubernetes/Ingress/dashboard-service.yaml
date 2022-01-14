@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-dashboard
+  namespace: kubernetes-dashboard
+spec:
+  type: ExternalName
+  externalName: my.ingress-dashboard.kube.dashboard.com
+  selector:
+    k8s-app: kubernetes-dashboard
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 9376
+  
