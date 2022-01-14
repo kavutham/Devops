@@ -19,6 +19,21 @@ ansible-playbook --> to run playbooks/play
 
 ansible-galaxy --> to create roles
 
-vars to define inline variables within the playbook
+    $ ansible-galaxy init role_name --> to create a new role in local directory
+    $ ansible-galaxy install role_name --> to download role from ansible galaxy
+
+## Variables
+
+vars to define inline variables within the playbook. Variables are refered using {{ }}
 
 vars_files to import files with variables
+
+## Basic modules and plugins
+
+    command -->
+    debug --> 
+    copy -->
+    Sychornization -->
+    fail -->
+    template -->
+    file --> 
