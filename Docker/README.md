@@ -1,5 +1,11 @@
+## Docker Basic Instructions
 Dockerfile --> (docker build) Image --> (docker run) --> container 
 
+Dockerfile can be named as like purpose.Dockerfile, Dockerfile.purpose, Dockerfile.
+
+Default it will automatically runs Dockerfile if not specified anything during docker build
+
+## Docker Commands
 docker inspect --> inspect image or container about it's details and information
 
 docker images --> print the avaiable images that we created using a docker file or puling (docker pull) the image directly from dockerhub
@@ -12,12 +18,11 @@ docker attach --> attach to the running container with the default command that 
 
 docker exec --> enter or open into that running cotainer
 
-
-Bridge: Default --> localhost IP --> docker hostt IP with port --> container port
-
-
 docker exec -it container-name /bin/sh
 
 docker-compose -d up
 
 docker-compose down
+
+#Docker Networking
+Bridge: Default --> localhost IP --> docker hostt IP with port --> container port
