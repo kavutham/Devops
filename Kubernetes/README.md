@@ -59,6 +59,7 @@ Default the pull policy of all containers in that pod will be set to IfNotPresen
 ## Service:    
 **ClusterIP:** 
 Exposes the Service internally to the cluster. This is the default setting for a Service. However a Kubernetes user you can use kubectl port-forward to access the service even though it uses a ClusterIP.
+
 **NodePort:** 
 Exposes the Service to the internet from the IP address of the Node at the specified port number. You can only use ports in the 30000-32767 range.
 
