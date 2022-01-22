@@ -1,5 +1,6 @@
 pipeline {
     agent any
+    options { checkoutToSubdirectory('/Jenkins/Gradle_pipeline')
     stages {
         stage('clean') {
             steps {
