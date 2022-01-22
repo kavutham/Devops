@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    stages {
+        stage('clean') {
+            steps {
+                bat 'gradle clean'
+            }
+        }
+		stage('Build') {
+            steps {
+                bat 'gradle build'
+            }
+        }
+        stage('Test') {
+            steps {
+                bat 'gradle test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deployed Successfully'
+            }
+        }
+    }
+}
