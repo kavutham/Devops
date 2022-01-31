@@ -2,3 +2,4 @@
 *.terraform
 #ignore terraform state files
 terraform.tfstate*
+.terraform.lock.hcl
