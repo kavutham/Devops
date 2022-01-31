@@ -90,3 +90,58 @@ This will create a load balancer assigned to a fixed IP address in the cloud, so
 **A PersistentVolumeClaim (PVC):** is a request for storage by a user which can be attained from PV. It is similar to a Pod. Pods consume node resources and PVCs consume PV resources. Pods can request specific levels of resources (CPU and Memory). 
 
 Claims can request specific size and access modes (e.g., they can be mounted ReadWriteOnce, ReadOnlyMany or ReadWriteMany.
+
+
+## AWS:
+
+Step1: Install Aws cli
+       
+    Configure IAM group to get access id and secret
+
+Step2: 
+      
+    aws configure
+    --> provide acces id, secret, default region
+
+**ECS:**
+Create Task dedinition 
+
+Create cluster with services --> (service holds number of tasks from task definition)
+
+    Step1: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 329969747407.dkr.ecr.us-east-1.amazonaws.com
+    Step2: docker tag hellodemo:latest 329969747407.dkr.ecr.us-east-1.amazonaws.com/myecsrepo:latest ##examplle repo/emage
+    Step3: docker push 329969747407.dkr.ecr.us-east-1.amazonaws.com/myecsrepo:latest
+
+Create EC2 role for Node groups
+     
+    AmazonEKSWorkerNodePolicy
+    AmazonEC2ContainerRegistryReadOnly
+    AmazonEKS_CNI_Policy
+    
+**EKS:**
+Create EKS role for EKS cluster
+
+Notes:
+Subnet configure auto-assign IP
+
+Provide outbound internet access to subent either nat or internet gateway
+
+    **set subnet tags:**
+    Public sub:
+    Key: kubernetes.io/role/elb
+    Value: 1
+    
+    Private Sub:
+    Key: kubernetes.io/role/internal-elb
+    Value: 1
+    
+    Common:
+    Key: kubernetes.io/cluster/yourEKSClusterNam
+    Value: shared
+
+To Connect EKS:
+
+    ## .kube context will be added for aws and your local cluster will be connect to eks using following steps
+    Step1: aws sts get-caller-identity
+    Step2: aws eks --region us-east-1 update-kubeconfig --name MyNewCluster
+    Step 3: kubectl get nodes -o wide
