@@ -8,3 +8,11 @@ terraform state list --> list subcommand to list of the resources in your projec
 terraform destroy --> destroys the resource created by apply commmand
 terraform apply -var "container_name=YetAnotherName" --> pass variable value using var flag
 terraform output --> displays output captured from output.tf
+
+Terraform loads variables in the following order, with later sources taking precedence over earlier ones:
+
+    Environment variables
+    The terraform.tfvars file, if present.
+    The terraform.tfvars.json file, if present.
+    Any *.auto.tfvars or *.auto.tfvars.json files, processed in lexical order of their filenames.
+    Any -var and -var-file options on the command line, in the order they are provided. (This includes variables set by a Terraform Cloud workspace.)
