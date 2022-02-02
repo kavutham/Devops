@@ -145,3 +145,13 @@ To Connect EKS:
     Step1: aws sts get-caller-identity
     Step2: aws eks --region us-east-1 update-kubeconfig --name MyNewCluster
     Step 3: kubectl get nodes -o wide
+  
+ Kubernetes Dashboard
+ 
+    Step1: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
+    Step2: Access the Dashboard useing this: http://127.0.0.1:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+    Step3: To provide token into the dashboard create ClusterRoleBinding using below.
+    kubectl apply -f https://raw.githubusercontent.com/hashicorp/learn-terraform-provision-eks-cluster/main/kubernetes-dashboard-admin.rbac.yaml
+    Step4: Fetch the token using this command
+    kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep sadmin-user-token | awk '{print $1}')
+    Step5: Paste the tokena and you can acccess the Dashboard
