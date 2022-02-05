@@ -1,4 +1,4 @@
-InitContainer:
+**InitContainer:**
 
 They run once during the startup process of pod. A pod can have any number of init containers and they will run once in order to completion.
 
