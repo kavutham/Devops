@@ -8,7 +8,7 @@ spec:
     app: hello
     version: 2.0.0
   ports:
-  - name: http
+  - name: http #we can provide name to the port and refer it in ingress instead of port
     protocol: TCP
     port: 80
     targetPort: 50001

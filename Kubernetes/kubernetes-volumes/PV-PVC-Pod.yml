@@ -1,0 +1,70 @@
+#Storage Class
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: localdisk
+provisioner: kubernetes.io/no-provisioner   #node provisioner
+allowVolumeExpansion: true                  #other otpions is false. Determines whether to expand/resize the volume that created
+
+
+#Persistent Volume
+#you dont actually have to create a storage class. Simply mentioning here will automatically provision it. 
+#But if want control like allowVolumeExpansion create a Storageclass
+---
+apiVersion: v1
+kind: PersistentVolume
+metada:
+  name: my-pv
+  spec:
+   storageClassName: localdisk #storage class referred here
+   persistentVolumeReclaimPolicy: Recycle
+   capacity:
+     storage: 1Gi
+   accessModes:
+   - ReadWriteOnce
+   hostpath:
+     path: /var/output
+
+#persistentVolumeReclaimPolicy: Recycle ---> otheroptions are Retain,Delete,Recycle
+#Retain: Keeps all data. Requires adminstrator to clean up all data manually to prepare PV to reused.
+#Delete: Deletes the underlying storage resource automatically (only works for cloud)
+#Recylce: Automatically deletes only the data in the underlying storage allowing PV to be used again
+
+
+#PersistenVolumeClaim 
+#You can expand the PVC without interrupting the application. Keep in mind to keep storage class allowVolumeExpansion is set to true
+#PVC will automatically will be bound to PV based on the spec provided
+# PV with status available: Not bound yet and ready to be used. Status=bound says it is attached to PV
+---
+apiVersion: v1
+kind: PersistenVolumeClaim
+metadata:
+  name: my-pvc
+  spec:
+  storageClassName: localdisk
+  accessModes:
+  - ReadWriteOnce  #it needs to match to PV and PVC
+  resources:
+    requests:
+      storage: 100Mi #provision based on the PV total storage. Provide less that 1Gi
+
+#Pod:
+---
+apiVersion: v1
+kind: Pod
+metada:
+  name: pv-pod
+spec:
+  restartPolicy: Never
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'echo Success! > /output/success.txt']
+    volumeMounts:
+    - name: PV-Volume
+      mountPath: /output #mounting the volume to this path in container
+  Volumes:
+  - name: PV-Volume
+    PersistenVolumeClaim:
+      claimName: my-pvc #pvc we created earlier is referred have

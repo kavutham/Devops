@@ -1,0 +1,25 @@
+#Example Case of MultiContainr pod with a sidecar container
+#Example Case of using shared volume
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-pod
+spec:
+  restartpolicy: Never
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh','-c','echo Sucess! > /output/success.txt']
+    volumMounts:
+    - name: my-volume
+      mountPath: /output
+  - name: busybox
+    image: busybox
+    command: ['sh','-c','echo Sucess! > /output/success.txt']
+    volumMounts:
+    - name: my-volume
+      mountPath: /output
+  Volumes:
+  - name: my-volume
+    hostpath: 
+    path: /src/data

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shipping-web
+spec:
+  containers:
+  - name: app-container
+    image: nginix:1.91.1
+  initContainers:
+  - name: shipping-svc-check
+    image: busybox:1.27
+    command: ['sh', '-c', 'until nslookup shipping-svc; do echo waiting for shipping-svc; sleep 2; done']

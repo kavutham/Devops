@@ -1,4 +1,5 @@
-apiVersion: extensions/v1beta1
+#apiVersion: extensions/v1beta1 #deprecated
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hello-ingress 
@@ -8,15 +9,22 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: kubernetes.docker.internal
-  #- host: kube-ingress.com
+  - host: kubernetes.docker.internal   #- host: kube-ingress.com
     http:
       paths:
-      - path: /
+      - path: /somepath
         backend:
-          serviceName: hello-service 
-          servicePort: http
+          service:
+            name: hello-service
+            ports:
+              name: http
       - path: /anotherservice
         backend:
-          serviceName: frontend
-          servicePort: http
+          service:
+            name: frontend
+            ports:
+              name: http
+
+#backed:
+  #serviceName: hello-service 
+  #servicePort: http
