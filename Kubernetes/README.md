@@ -1,16 +1,18 @@
 ## Basic Commands and Explanation
  
-	**exec alllows any process within the container:** kubectl exec --stdin --tty mongo-75f59d57f4-5z52g -- /bin/bash
+	exec alllows any process within the container: kubectl exec --stdin --tty mongo-75f59d57f4-5z52g -- /bin/bash
 	
-	**attach to the main process run by the container:** kubectl attach redis -i
+	attach to the main process run by the container: kubectl attach redis -i
 	
- 	**Create and run a particular image in a pod:** kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
+ 	Create and run a particular image in a pod: kubectl run -i --tty busybox --image=busybox --restart=Never -- sh
 	
- 	**to switch to namespace:** kubectl config set-context --current --namespace=my-namespace
+ 	to switch to namespace: kubectl config set-context --current --namespace=my-namespace
 	
-	**portforward:** kubectl port-forward svc/frontend 8080:80
+	portforward: kubectl port-forward svc/frontend 8080:80
 	
-	**HPA:** kubectl autoscale rs frontend --max=10 --min=3 --cpu-percent=50
+	HPA: kubectl autoscale rs frontend --max=10 --min=3 --cpu-percent=50
+	
+	To check log: kubectl logs pod-name -c container-name
 
 ## Networking:
 **Conatiner in same pod:**
