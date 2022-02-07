@@ -27,13 +27,13 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
-         // environment {
-            //def SCANNER_HOME = tool 'Sonar-scanner'
-            //}
-          //steps {
-            def SCANNER_HOME = tool 'Sonar-scanner';
+          environment {
+            SCANNER_HOME = tool 'Sonar-scanner'
+            }
+          steps {
+            SCANNER_HOME = tool 'Sonar-scanner';
             withSonarQubeEnv(credentialsId: 'sonar-jenkins', installationName: 'localsonar') {
-            bat '''$SCANNER_HOME/bin/sonar-scanner \
+            bat '''${SCANNER_HOME}/bin/sonar-scanner \
             -Dsonar.projectKey=jenkins-test \
             -Dsonar.projectName=jenkins-test \
             -Dsonar.sources=src/ \
@@ -41,7 +41,7 @@ pipeline {
             -Dsonar.exclusions=src/test/java/****/*.java \
             -Dsonar.java.libraries=/var/lib/jenkins/.m2/**/*.jar
             -Dsonar.projectVersion=${BUILD_NUMBER}-${params.versionid} '''
-           // }
+            }
             }
         }
         stage('Squality Gate') {
