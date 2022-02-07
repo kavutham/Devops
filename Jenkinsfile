@@ -27,10 +27,11 @@ pipeline {
             }
         }
         stage('SonarQube analysis') {
-          environment {
-            SCANNER_HOME = tool 'Sonar-scanner'
-            }
+         // environment {
+            //def SCANNER_HOME = tool 'Sonar-scanner'
+            //}
           steps {
+            def SCANNER_HOME = tool 'Sonar-scanner';
             withSonarQubeEnv(credentialsId: 'sonar-jenkins', installationName: 'localsonar') {
             bat '''$SCANNER_HOME/bin/sonar-scanner \
             -Dsonar.projectKey=jenkins-test \
