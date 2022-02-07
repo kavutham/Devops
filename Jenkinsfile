@@ -30,7 +30,7 @@ pipeline {
          // environment {
             //def SCANNER_HOME = tool 'Sonar-scanner'
             //}
-          steps {
+          //steps {
             def SCANNER_HOME = tool 'Sonar-scanner';
             withSonarQubeEnv(credentialsId: 'sonar-jenkins', installationName: 'localsonar') {
             bat '''$SCANNER_HOME/bin/sonar-scanner \
@@ -41,7 +41,7 @@ pipeline {
             -Dsonar.exclusions=src/test/java/****/*.java \
             -Dsonar.java.libraries=/var/lib/jenkins/.m2/**/*.jar
             -Dsonar.projectVersion=${BUILD_NUMBER}-${params.versionid} '''
-            }
+           // }
             }
         }
         stage('Squality Gate') {
