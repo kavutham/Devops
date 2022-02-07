@@ -32,14 +32,7 @@ pipeline {
             }
           steps {
             withSonarQubeEnv(credentialsId: 'sonar-jenkins', installationName: 'localsonar') {
-            bat '''${SCANNER_HOME}/bin/sonar-scanner \
-            -Dsonar.projectKey=jenkins-test \
-            -Dsonar.projectName=jenkins-test \
-            -Dsonar.sources=src/ \
-            -Dsonar.java.binaries=target/classes/ \
-            -Dsonar.exclusions=src/test/java/****/*.java \
-            -Dsonar.java.libraries=/var/lib/jenkins/.m2/**/*.jar
-            -Dsonar.projectVersion=${BUILD_NUMBER}-${params.versionid} '''
+            bat "${SCANNER_HOME}/bin/sonar-scanner -Dsonar.projectKey=jenkins-test -Dsonar.projectName=jenkins-test -Dsonar.sources=src/ -Dsonar.java.binaries=target/classes/ -Dsonar.exclusions=src/test/java/****/*.java -Dsonar.java.libraries=/var/lib/jenkins/.m2/**/*.jar -Dsonar.projectVersion=${BUILD_NUMBER}-${params.versionid}"
             }
             }
         }
