@@ -33,8 +33,8 @@ pipeline {
           steps {
             withSonarQubeEnv(credentialsId: 'sonar-credentialsId', installationName: 'Sonar') {
             bat '''$SCANNER_HOME/bin/sonar-scanner \
-            -Dsonar.projectKey=projectKey \
-            -Dsonar.projectName=projectName \
+            -Dsonar.projectKey=jenkins-test \
+            -Dsonar.projectName=jenkins-test \
             -Dsonar.sources=src/ \
             -Dsonar.java.binaries=target/classes/ \
             -Dsonar.exclusions=src/test/java/****/*.java \
