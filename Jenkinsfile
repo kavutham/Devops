@@ -41,7 +41,7 @@ pipeline {
                 sleep(10)  /* Added 10 sec sleep that was suggested in few places*/
                 script{
                     timeout(time: 10, unit: 'MINUTES') {
-                        def qg = waitForQualityGate(webhookSecretId: 'webhook') abortPipeline: true
+                        def qg = waitForQualityGate webhookSecretId:'webhook' abortPipeline: true
                         if (qg.status != 'OK') {
                             echo "Status: ${qg.status}"
                             error "Pipeline aborted due to quality gate failure: ${qg.status}"
