@@ -54,7 +54,6 @@ pipeline {
             //waitForQualityGate abortPipeline: true
             //}
         }
-        }
         stage('Deploy') {
           steps {
             bat "echo Deployed version ${params.versionid} Successfully"
