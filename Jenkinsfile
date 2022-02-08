@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Squality Gate') {
           steps {
-                **sleep(10)  /* Added 10 sec sleep that was suggested in few places*/**
+                sleep(10)  /* Added 10 sec sleep that was suggested in few places*/
                 script{
                     timeout(time: 10, unit: 'MINUTES') {
                         def qg = waitForQualityGate abortPipeline: true
