@@ -6,19 +6,32 @@ Dockerfile can be named as like purpose.Dockerfile, Dockerfile.purpose, Dockerfi
 Default it will automatically runs Dockerfile if not specified anything during docker build
 
 ## Docker Commands
+
+docker build -t tagname:version . ('.' represents current directory where Dockerfile is present. switch directory if needed)
+
+docker run -d --name=container-name -p 80:80 tagname:version ('-d' reprents detached mode. '-p' represents port expose. --name give cotainer name)
+
 docker inspect --> inspect image or container about it's details and information
 
 docker images --> print the avaiable images that we created using a docker file or puling (docker pull) the image directly from dockerhub
 
-docker ps --> all the running container in our docker host
+docker inspect --> {docker inspect imagename} --> to inspect what the docker image consists of. All information of images.
 
-docker logs --> check logs after container running --> debug application
+docker ps --> all the running container in our docker host. {docker ps -a} will display all stopped containers
 
-docker attach --> attach to the running container with the default command that it started with.
+docker stop container-id/container-name (stops the container and you can view the stopped container using {"docker ps -a"}
 
-docker exec --> enter or open into that running cotainer
+docker kill container-d/container-name {to stop the container implicitly if not stopped using stop comamnd"}
 
-docker exec -it container-name /bin/sh
+docker container prune --> to remove all stopped container
+
+docker rmi image-name --> to delete the image in local
+
+docker logs --> check logs after container running --> debug application { docker logs containerid/containername}
+
+docker attach --> attach to the running container with the default command that it started with. {docker attach continer-id/container-name}
+
+docker exec --> enter or open into that running cotainer {docker exec -it container-name /bin/sh}
 
 docker commit <conatainer id> <username/imagename>  --> This command creates a new image of an edited container on the local system
 
