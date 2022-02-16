@@ -1,0 +1,40 @@
+version: '3'
+services:
+  postgresql:
+    image: docker.io/bitnami/postgresql:13
+    restart: always
+    volumes:
+      - ./db:/bitnami/postgresql
+      #- 'postgresql_data'
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - POSTGRESQL_USERNAME=bn_sonarqube
+      - POSTGRESQL_DATABASE=bitnami_sonarqube
+  sonarqube:
+    image: docker.io/bitnami/sonarqube:latest
+    ports:
+      - '9000:9000'
+    restart: always
+    volumes:
+      - ./sonarqube:/bitnami/sonarqube
+      #- ./sonar_logs:/opt/bitnami/sonarqube
+      #- 'sonarqube_data'
+    depends_on:
+      - postgresql
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=yes
+      - SONARQUBE_DATABASE_HOST=postgresql
+      - SONARQUBE_DATABASE_PORT_NUMBER=5432
+      - SONARQUBE_DATABASE_USER=bn_sonarqube
+      - SONARQUBE_DATABASE_NAME=bitnami_sonarqube
+#volumes:
+ # postgresql_data:
+   # - "C:/Users/Kavutham/Documents/tempgit/Devops/Docker/compose/sonarqube/db:/bitnami/postgresql"
+  #sonarqube_data:
+    #- "C:/Users/Kavutham/Documents/tempgit/Devops/Docker/compose/sonarqube/sonarqube:/bitnami/sonarqube"
+#c7c3322e6990d04f7b72a3541cc8605d9e3b02bc
+#admin:bitnami
+#jenkins:jenkins
+#4415a5679ccf00e28b0f61454a8e7c064db0e7cd
