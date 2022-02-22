@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx-re
+        image: nginx:1.16.1
+        ports:
+        - containerPort: 80
+
+
+# kubectl set image deployment/nginx-deployment nginx=nginx:1.16.1
+# kubectl rollout status deployment/nginx-deployment
+# kubectl get rs
+# kubectl rollout history deployment/nginx-deployment
+# kubectl rollout undo deployment/nginx-deployment
+# kubectl rollout undo deployment/nginx-deployment --to-revision=2

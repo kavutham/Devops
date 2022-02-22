@@ -4,6 +4,7 @@ metadata:
   name: apache-pod
   labels:
     app: web
+    tier: frontend
 spec:
   containers:
   - name: apache-container

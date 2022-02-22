@@ -40,6 +40,15 @@
     Pods has it own ip address so when it dies, its ip is also lost. To make communication still, we need service tagged to pods using selector tag
     whcih will be running always even if the pod dies.
 
+## Pod Probes:
+    livenessProbe: Indicates whether the Container is running. If the liveness probe fails, the kubelet kills the Container, and the Container is subjected to its restart policy. If a Container does not provide a liveness probe, the default state is Success.
+
+    readinessProbe: Indicates whether the Container is ready to service requests. If the readiness probe fails, the endpoints controller removes the Pod’s IP address from the endpoints of all Services that match the Pod. The default state of readiness before the initial delay is Failure. If a Container does not provide a readiness probe, the default state is Success.
+
+    startupProbe: Indicates whether the application within the Container is started. All other probes are disabled if a startup probe is provided, until it succeeds. If the startup probe fails, the kubelet kills the Container, and the Container is subjected to its restart policy. If a Container does not provide a startup probe, the default state is Success
+
+Readiness Probe shuts the traffic from service down. so that service can always send the request to healthy pod whereas the liveness probe restarts the pod in case of failure. liveness does not do anything for the service. Service continues to send the request to the pods as usual if it is in ‘available’ status.
+
 ## Images: 
 	To use an image without uploading it, you can follow these steps: It is important that you be in same shell since you are setting environment variables!
 	1. Set the environment variables with eval $(minikube docker-env)
