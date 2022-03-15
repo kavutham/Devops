@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-test
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: dedicated
+            operator: In
+            values:
+            - devs
+  containers:
+  - name: just-container
+    image: supergiantkir/animals:bear
+
+
+
+
+#kubectl label nodes host1 dedicated=devs

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-blue
+  labels:
+    security: s1
+spec:
+  containers:
+  - name: bear
+    image: supergiantkir/animals:bear
+  tolerations:
+  - key: "colour"
+    operator: "Equal"
+    value: "blue"
+    effect: "NoSchedule"
+
+
+#kubectl taint nodes host1 colour=red:NoSchedule
+#kubectl taint nodes ip-172-18-18-245.ec2.internal colour=blue:NoSchedule-

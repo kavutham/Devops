@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: node-affinity-demo
+  labels:
+    env: staging
+spec:
+  containers:
+  - name: node-affinity-demo
+    image: nginx-affinity
+  nodeAffinity:
+    - requiredDuringSchedulingreqiredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: size
+          operator: In
+          values:
+          - small
+        - key: instance_type
+          operator: In
+          values: 
+          - medium
+
+#size= largge
+#size= small

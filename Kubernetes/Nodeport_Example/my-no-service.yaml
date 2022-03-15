@@ -11,3 +11,7 @@ spec:
   - protocol: TCP
     port: 85
     targetPort: 50000
+
+
+
+#broswer --> nodeip:32309 --> 10.98.66.79:85 --> pod1:5000 pod2:5000

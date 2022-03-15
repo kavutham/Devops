@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  #creationTimestamp: null
+  name: test-config-1
+data:
+  test_config.txt: |
+    this is a config file with a whole bunch of stuff
+    to show that configs can be any form
+    blah 90111
+    blah
+    blah

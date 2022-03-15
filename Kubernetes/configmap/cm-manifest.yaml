@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: manifest-example
+data:
+  city: Chennai 02
+  state: Tamilnadu
+
+# kubectl create cm literal-example --from-literal="Chennai 01" --from-literal=state=Tamilnadu
+# kubectl create cm dir-example --from-file=cm/
+# kubectl create cm file-example --from-file=cm/city --from-file=cm/state
+# kubectl get cm file-example -o yaml

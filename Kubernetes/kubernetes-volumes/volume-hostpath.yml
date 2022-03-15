@@ -7,19 +7,20 @@ metadata:
 spec:
   restartpolicy: Never
   containers:
-  - name: busybox
+  - name: busybox1
     image: busybox
-    command: ['sh','-c','echo Sucess! > /output/success.txt']
+    command: ['sh','-c','while true; do echo Sucess! > /output/success.txt; sleep 5; done']
     volumMounts:
     - name: my-volume
       mountPath: /output
-  - name: busybox
+  - name: busybox2
     image: busybox
-    command: ['sh','-c','echo Sucess! > /output/success.txt']
-    volumMounts:
+    command: ['sh','-c','while true; cat /input/success.txt; sleep 5; done']
+    volumeMounts:
     - name: my-volume
-      mountPath: /output
-  Volumes:
+      mountPath: /input
+  volumes:
   - name: my-volume
     hostpath: 
-    path: /src/data
+    #path: /src/data
+    path: //C://Users//Kavutham//Documents//tempgit//Dummy

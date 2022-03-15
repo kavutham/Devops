@@ -19,5 +19,5 @@ metadata:
     name: shipping-svc
 spec:
   containers:
-  - name: nginix
-    image: nginix:1.91.1
+  - name: apache-container
+    image: httpd

@@ -4,8 +4,8 @@ metadata:
   name: shipping-web
 spec:
   containers:
-  - name: app-container
-    image: nginix:1.91.1
+  - name: apache-container
+    image: httpd
   initContainers:
   - name: shipping-svc-check
     image: busybox:1.27

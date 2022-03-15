@@ -7,18 +7,18 @@ spec:
   containers:
   - name: busybox1
     image: busybox
-    command: ['sh','-c','while true; do echo Sucess! > /output/success.txt; sleep 5; done']
+    command: ['/bin/sh','-c','while true; do echo Sucess! > /output/success.txt; sleep 5; done']
     volumMounts:
-      -name: my-volume
+    - name: cache-volume
       mountPath: /output
   - name: busybox2
     image: busybox
-    command: ['sh','-c','while true; cat /input/success.txt; sleep 5; done']
+    command: ['/bin/sh','-c','while true; do cat /input/success.txt; sleep 5; done']
     volumeMounts:
-    - name: my-volume
+    - name: cache-volume
       mountPath: /input
-      Volumes:
-  - name: my-volume
+  volumes:
+  - name: cache-volume
     emptyDir: {}
 
 

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    env: staging
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeSelector:
+    disk: HDD
+  
+#kubectl label node node1 disk=HDD
