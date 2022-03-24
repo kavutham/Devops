@@ -3,8 +3,9 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: localdisk
+  name: local-storage
 provisioner: kubernetes.io/no-provisioner   #node provisioner
+#volumeBindingMode: WaitForFirstConsumer
 allowVolumeExpansion: true                  #other otpions is false. Determines whether to expand/resize the volume that created
 
 
@@ -14,17 +15,18 @@ allowVolumeExpansion: true                  #other otpions is false. Determines 
 ---
 apiVersion: v1
 kind: PersistentVolume
-metada:
+metadata:
   name: my-pv
-  spec:
-   storageClassName: localdisk #storage class referred here
-   persistentVolumeReclaimPolicy: Recycle
-   capacity:
-     storage: 1Gi
-   accessModes:
-   - ReadWriteOnce
-   hostpath:
-     path: /var/output
+spec:
+  storageClassName: local-storage #storage class referred here
+  persistentVolumeReclaimPolicy: Recycle
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteMany
+  hostPath:
+    path: /run/desktop/mnt/host/C/Users/Kavutham/Documents/tempgit/Dum
+    type: Directory
 
 #persistentVolumeReclaimPolicy: Recycle ---> otheroptions are Retain,Delete,Recycle
 #Retain: Keeps all data. Requires adminstrator to clean up all data manually to prepare PV to reused.
@@ -38,33 +40,34 @@ metada:
 # PV with status available: Not bound yet and ready to be used. Status=bound says it is attached to PV
 ---
 apiVersion: v1
-kind: PersistenVolumeClaim
+kind: PersistentVolumeClaim
 metadata:
   name: my-pvc
-  spec:
-  storageClassName: localdisk
+spec:
+  storageClassName: local-storage
+  volumeName: my-pv
   accessModes:
-  - ReadWriteOnce  #it needs to match to PV and PVC
+  - ReadWriteMany  #it needs to match to PV and PVC
   resources:
     requests:
-      storage: 100Mi #provision based on the PV total storage. Provide less that 1Gi
+      storage: 100Mi #provision based on the PV total storage. Provide less that 1Gi # Empty string must be explicitly set otherwise default StorageClass will be set
 
 #Pod:
 ---
 apiVersion: v1
 kind: Pod
-metada:
+metadata:
   name: pv-pod
 spec:
   restartPolicy: Never
   containers:
   - name: busybox
     image: busybox
-    command: ['sh', '-c', 'echo Success! > /output/success.txt']
+    command: ['sh', '-c', "while :; do echo Success! > /output/success.txt; sleep 5 ; done"]
     volumeMounts:
-    - name: PV-Volume
+    - name: pv-volume
       mountPath: /output #mounting the volume to this path in container
-  Volumes:
-  - name: PV-Volume
-    PersistenVolumeClaim:
+  volumes:
+  - name: pv-volume
+    persistentVolumeClaim:
       claimName: my-pvc #pvc we created earlier is referred have

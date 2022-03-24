@@ -1,4 +1,6 @@
 ## Basic Commands and Explanation
+
+    kubectl config use-context docker-desktop --> to switch context between different kube clusters
  
 	exec alllows any process within the container: kubectl exec --stdin --tty mongo-75f59d57f4-5z52g -- /bin/bash
 	

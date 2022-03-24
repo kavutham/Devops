@@ -12,16 +12,16 @@ spec:
       sleep 10;
       done
     volumeMounts:
-    - name: config-volume
+    - name: volume1
       mountPath: /myconfig
-    - name: city
+    - name: volume2
       mountPath: /mycity
       readOnly: true
   volumes:
-  - name: config-volume
+  - name: volume1
     configMap:
       name: file-example
-  - name: city
+  - name: volume2
     configMap:
       name: manifest-example
       items:

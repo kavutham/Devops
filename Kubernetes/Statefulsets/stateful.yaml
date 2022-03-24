@@ -1,0 +1,86 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner   #node provisioner
+allowVolumeExpansion: true 
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv
+spec:
+  storageClassName: local-storage #storage class referred here
+  persistentVolumeReclaimPolicy: Recycle
+  capacity:
+    storage: 1Gi
+  accessModes:
+  - ReadWriteMany
+  hostPath:
+    path: /run/desktop/mnt/host/C/Users/Kavutham/Documents/tempgit/Dum
+    type: Directory
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: state-pvc
+spec:
+  storageClassName: local-storage
+  volumeName: my-pv
+  accessModes:
+  - ReadWriteMany  #it needs to match to PV and PVC
+  resources:
+    requests:
+      storage: 100Mi
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-example
+spec:
+  replicas: 3
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: stateful
+  serviceName: app
+  updateStrategy:
+    type: OnDelete #RollingUpdate is default. The OnDelete Update Strategy will not spawn a new iteration of the Pod until the previous one was deleted. This allows for manual gating the update process for the StatefulSet.
+  template:
+    metadata:
+      labels:
+        app: stateful
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:stable-alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: state-volume
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: state-volume
+        persistentVolumeClaim:
+          claimName: state-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+spec:
+  clusterIP: None
+  selector:
+    app: stateful
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
+# kubectl exec sts-example-0 -- nslookup sts-example-1.app.default.svc.cluster.local
+# kubectl exec sts-example-0 -- nslookup app.default.svc.cluster.local

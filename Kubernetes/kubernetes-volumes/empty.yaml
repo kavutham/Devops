@@ -9,13 +9,13 @@ spec:
     command: ["/bin/sh", "-ec", "while :; do echo '.'; sleep 5 ; done"]
     volumeMounts:
     - mountPath: /cache
-      name: myvolume
+      name: myvolume1
   - image: busybox
     name: tests
     command: ["/bin/sh", "-ec", "while :; do echo '.'; sleep 5 ; done"]
     volumeMounts:
     - mountPath: /shared
-      name: myvolume
+      name: myvolume2
   volumes:
-  - name: myvolume
+  - name: myvolume1
     emptyDir: {}
