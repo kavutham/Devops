@@ -1,0 +1,4 @@
+replicaCount: 1
+prodUrlSchema: false
+datacenter: us-east
+baseUrl: myapp.org

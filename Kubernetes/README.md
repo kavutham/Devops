@@ -168,3 +168,15 @@ To Connect EKS:
     Step4: Fetch the token using this command
     kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep sadmin-user-token | awk '{print $1}')
     Step5: Paste the tokena and you can acccess the Dashboard
+
+## HELM
+
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm env --> displays the localtion/path of all repo and config
+    helm install my-apache bitnami/apache --version 8.0.2
+    helm list
+    helm rollback my-apache 1 
+
+    helm create my-ghost-app
+    helm template --debug my-ghost-app --> to dry-run
+
