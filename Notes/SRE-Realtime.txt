@@ -1,0 +1,107 @@
+﻿# SRE Realtime Quick Notes
+
+real time SRE interview questions
+what is Incident difference to Problem
+
+CDR -
+ID Proofing - Biometrics - Talk to Basappa
+
+What Went Wrong
+- The address field was not loading when users navigated back to the previous page.
+- The issue was caused by a QAS (Quick Address Search) service failure, which is the backend addresslookup engine.
+- A Node.js logic bug prevented the address component from reloading correctly after page navigation.
+" What is QAS?
+- QAS (Quick Address Search) is the addressvalidation and autocomplete engine used to fetch and validate customer addresses.
+- If QAS fails, address fields do not populate or validate correctly.
+" How We Identified the Issue
+- Detected through Splunk error reports showing repeated QAS lookup failures.
+- Analysed customer impact, error patterns, and confirmed only 10"15 customers were affected out of ~1000.
+- Also matched with a known error pattern where the system rejects PO Box"only addresses.
+
+What Was the Fix
+- Backend remediation team applied a Node.js fix to handle the QAS response correctly and reload the address field.
+- Customer contact team performed manual remediation for impacted customers until the fix was deployed.
+- Issue was included in the weekly remediation release.
+Why It Reached Production (Gap)
+- There was a gap in test cases " the scenario of navigating back to the previous page and reloading the address field was not covered in QA.
+- QAS failure scenarios (e.g., PO Boxonly addresses) were not fully tested in lower environments.
+- QAS integration tests in UAT did not include negative or edgecase address patterns.
+
+
+
+Certificate renewal
+Patching Minor auto and Major
+App & DB restoration
+Disaster recovery
+Capacity plan -Annually - assess current infra reponse time, app performance, cpu & memory, infra part and document them for current traffic and check with business for future load.
+If business expects more in future, capcity plan marked as amber and plan to increase the capacity.
+Compare it with previous year see it reaches the benchmark.
+
+Currency upgrade and Nabserv like software and framework model updates - NEF update
+
+Compliance works - Tagging update, securirty review audit,
+Operation readiness - PRR - Project Readiness review -Checklist (Category SDM, SO, DR, Security, ITSC -provide evidence)  - basicllay check if New funcitional triggers external dependency or modification to architecture, Fill the form - Outcome is positive.
+
+
+SDM - Service delivery manager,- checks for the tsr, performance test, dashboard, architecture udpates,
+SO - Service Owner - Checks for Third party engagement, agreement changes if any - Engage if impacts, CHF Dashbaord, Transaction and reponse time change
+
+Sercuirty - SCA - Review for security audit and requirement - example like TLS version, encryption in rest & transit, IAM role, alerting secrtion, security logging happening, audit for iam role.
+
+
+Code Reviews.
+Change creation & approvals.
+
+Tracking SCA (SCA- Security Control Assessment.)- Security Control Audit -
+Project has 7 assets 45 controls - It includes various category likes, cert management , data in taransit & rest, backup done, encryptions, itsim integration, changes done, security logs, audit logs, alerting done, tls version used, database security including schemas, protections, kms used, s3 bucket security, ensuring policy based contols
+
+
+
+xMatters is an incident automation and communication platform. Its strong in workflow automation, multichannel alerting, and ITSM integration. During incidents, xMatters can automatically trigger runbooks, notify the right teams, update ServiceNow or Jira, and send stakeholder communications. Its especially useful in enterprise environments where you need structured, automated workflows to reduce MTTR and maintain consistent incident response.
+
+RTO " Recovery Time Objective
+- How long it takes to restore a service after an outage.
+
+RPO " Recovery Point Objective
+- How much data loss is acceptable during an incident.
+
+" Certificate Renewal
+- Performed proactive certificate monitoring and renewal to prevent service outages, ensuring all internal and external endpoints remained compliant and secure.
+Patching (Minor " Automated, Major " Manual)
+- Managed automated minor patch cycles and coordinated major patching activities across infrastructure and applications, ensuring stability, compliance, and minimal downtime.
+- Application & Database Restoration
+- Executed app and DB restoration procedures during incidents or DR drills, validating backup integrity and ensuring recovery objectives (RTO/RPO) were consistently met.
+Disaster Recovery (DR)
+- Participated in DR planning and execution, validating failover processes, documenting gaps, and ensuring systems met business continuity requirements.
+" Annual Capacity Planning
+- Conducted annual capacity assessments by analysing infra response times, app performance, CPU/memory utilisation, and traffic patterns.
+- Collaborated with business teams to forecast future load; marked capacity as green/amber based on projections and planned scaling where required.
+- Compared current performance with previous year benchmarks to ensure growth readiness and performance consistency.
+" Currency Upgrades (Frameworks, NEF, NABServ, etc.)
+- Performed currency uplift for platform components, frameworks, and internal services (e.g., NEF updates), ensuring systems remained supported, secure, and aligned with enterprise standards.
+Compliance Activities
+- Updated resource tagging, performed security reviews, and supported audit activities to ensure adherence to internal and regulatory compliance frameworks.
+" Operational Readiness (PRR " Project Readiness Review)
+- Completed PRR checklists across SDM, SO, DR, Security, and ITSC categories; validated architecture changes, dependencies, and evidence to ensure new features were productionready.
+SDM (Service Delivery Manager) Reviews
+- Supported SDM reviews by validating TSRs, performance test results, dashboards, and architecture updates to ensure operational readiness.
+SO (Service Owner) Reviews
+- Engaged with SOs to assess thirdparty dependencies, agreement impacts, CHF dashboards, and transaction/response time changes for service continuity.
+" Security (SCA " Security Control Assessment)
+- Conducted SCA reviews covering TLS versions, encryption at rest/in transit, IAM roles, alerting, logging, and audit controls to ensure security posture remained strong.
+' Code Reviews
+- Performed code reviews focusing on reliability, security, and operational best practices, ensuring productiongrade quality.
+" Change Creation & Approvals
+- Created, reviewed, and approved changes (CAB), ensuring risk assessment, rollback plans, and stakeholder communication were in place.
+" Tracking SCA Controls
+- Managed SCA compliance across multiple assets and controls (e.g., cert management, encryption, backups, ITSM integration, logging, alerting, KMS, S3 security), ensuring all 45+ controls were met and documented.
+
+
+
+We migrated from ECS to EKS to meet NABs compliance requirements, adopt a unified Helmbased deployment model, and enable future multicloud portability. EKS also gives us richer automation, better observability, stronger workload isolation, and aligns with industrystandard Kubernetes practices.
+
+Sev1 = STOP EVERYTHING, Business is down. Huge customers impact.
+Sev2 = FIX FAST, but not total panic, Degraded but still running, only few customers impacted
+
+
+

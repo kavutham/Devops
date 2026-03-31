@@ -1,20 +1,20 @@
-Table of Contents
-- Core Components
-- Probes
-- Labels & Selectors
-- Deployments & Services
-- Ingress & Gateway API
-- Traffic Flow (AWS EKS)
-- Storage (PV, PVC, StorageClass)
-- RBAC
-- ConfigMaps & Secrets
-- Namespaces & Resource Management
-- Helm
-- Troubleshooting
-- Logging
-- Docker
+# DevOps-Prep Quick Notes
 
-1. Core Components
+## Navigation
+- [Terraform](terraform.md)
+- [Kubernetes](kubernetes.md)
+- [Linux](linux.md)
+- [AWS](aws.md)
+
+## How to use
+1. Browse each file as a topic sheet.
+2. Use headings for quick jump links in GitHub.
+3. For wiki style navigation, copy these into the GitHub Wiki Pages UI.
+
+---
+
+> Existing detailed Kubernetes notes are moved to `kubernetes.md`.
+
 Master Node Components
 API Server
 Central control-plane component.
